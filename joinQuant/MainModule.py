@@ -2,6 +2,7 @@ import jqdatasdk as sdk
 import pandas as pd
 
 from joinQuant.DataContainer import DataContainer
+from joinQuant.DataModel.Tables import TableManager
 
 
 def auth():
@@ -11,4 +12,7 @@ def auth():
 if __name__ == '__main__':
     auth()
     container = DataContainer()
-    container.updateList()
+    companies = container.getCompanies()
+    for company in companies:
+        priceHistory = company.getPriceHistory()
+

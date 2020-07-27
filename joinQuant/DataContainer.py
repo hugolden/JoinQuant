@@ -1,16 +1,19 @@
 import jqdatasdk as sdk
 
+from joinQuant.Context import Context
+from joinQuant.DataModel.ComaniesCollection import CompaniesCollection
+from joinQuant.DataModel.CompanyFrame import CompanyFrame
+from joinQuant.DataModel.Tables import TableManager
+
+
 class DataContainer:
     def __init__(self):
-        self.__stockList = []
+        self.__context = Context()
+        tableManager = TableManager(self.__context)
+        tableManager.create_table()
+        self.__companiesCollection = CompaniesCollection(self.__context)
+        self.__companies = self.__companiesCollection.getCompanies()
 
+    def getCompanies(self):
+        return self.__companies
 
-    def updateList(self):
-        self.__stockList = sdk.get_all_securities(types=['stock','fund'])
-        print(self.__stockList)
-
-    def updateAllData(self):
-        return False # update failed
-
-    def getSingleFrame(self, secId):
-        pass
