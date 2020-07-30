@@ -13,23 +13,19 @@ class DataQuery(metaclass=abc.ABCMeta):
         pass
 
     @abc.abstractmethod
-    def queryFromMemory(self):
+    def _queryFromMemory(self):
         pass
 
     @abc.abstractmethod
-    def queryFromDatabase(self):
+    def _queryFromDatabase(self):
         pass
+
 
     @abc.abstractmethod
-    def queryFromCache(self):
+    def _queryFromServer(self):
         pass
 
-    @abc.abstractmethod
-    def queryFromServer(self):
-        pass
-
-    def executeQuery(self):
+    def _executeQuery(self):
         if not self.queryFromMemory():
             if not self.queryFromDatabase():
-                if not self.queryFromCache():
-                    self.queryFromServer()
+                self.queryFromServer()

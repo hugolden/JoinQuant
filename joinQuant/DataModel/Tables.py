@@ -9,7 +9,11 @@ class TableManager(BaseFrame):
         create_company_table_sql = "CREATE TABLE IF NOT EXISTS CompaniesCollection(" \
                            "    ID SERIAL PRIMARY KEY," \
                            "    code varchar(12)," \
-                           "    name varchar(100)" \
+                           "    display_name varchar(32)," \
+                           "    name varchar(100)," \
+                           "    start_date varchar(32)," \
+                           "    end_date varchar(32)," \
+                           "    type varchar(32)" \
                            ")"
 
         create_dates_table_sql = "CREATE TABLE IF NOT EXISTS PriceCollection(" \
