@@ -2,8 +2,8 @@ from joinQuant.Context import Context
 
 
 def queryData(context: Context, tableName: str, params: dict = {}) -> list:
-    query_sql = "SELECT * FROM %s".format(tableName)
-    if len(dict) != 0:
+    query_sql = "SELECT * FROM {}".format(tableName)
+    if len(params) != 0:
         query_sql += "WHERE"
         items = list(params)
         for i in range(len(items)):
@@ -20,7 +20,7 @@ def queryData(context: Context, tableName: str, params: dict = {}) -> list:
 
 
 def insertData(context: Context, tableName: str, entries: dict):
-    insert_sql = "INSERT INTO %s (".format(tableName)
+    insert_sql = "INSERT INTO {} (".format(tableName)
 
     items = list(entries.items())
     values = []
@@ -37,7 +37,7 @@ def insertData(context: Context, tableName: str, entries: dict):
             insert_sql += ')'
             valuesHolder += ')'
 
-    insert_sql = "%s VALUES %s".format(insert_sql, valuesHolder)
+    insert_sql = "{0} VALUES {1}".format(insert_sql, valuesHolder)
 
     cursor = context.getCusor()
     cursor.execute(insert_sql, tuple(values))

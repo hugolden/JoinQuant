@@ -32,19 +32,19 @@ class TableManager(BaseFrame):
                                   "    lowPrice double precision" \
                                   ") "
 
-        create_fundamentals_table_sql = "CREATE TABLE IF NO EXISTS Fundamental(" \
+        create_fundamentals_table_sql = "CREATE TABLE IF NOT EXISTS Fundamental(" \
                                         "code varchar(12) PRIMARY KEY," \
-                                        "date varchar(32)," \
+                                        "day varchar(32)," \
                                         "capitalization double precision," \
                                         "circulating_cap double precision," \
-                                        "market_cap double prcision," \
-                                        "circulating_market_cap double prcision," \
-                                        "turnover_ratio double prcision," \
-                                        "pe_ratio double prcision," \
-                                        "pe_ratio_lyr double prcision," \
-                                        "pb_ratio double prcision," \
-                                        "ps_ratio double prcision," \
-                                        "pcf_ratio double prcision" \
+                                        "market_cap double precision," \
+                                        "circulating_market_cap double precision," \
+                                        "turnover_ratio double precision," \
+                                        "pe_ratio double precision," \
+                                        "pe_ratio_lyr double precision," \
+                                        "pb_ratio double precision," \
+                                        "ps_ratio double precision," \
+                                        "pcf_ratio double precision" \
                                         ")"
 
         self._cursor.execute(create_company_table_sql)

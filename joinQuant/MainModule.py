@@ -10,4 +10,5 @@ def auth():
 if __name__ == '__main__':
     auth()
     storyBoard = MainStoryboard()
+    storyBoard.getAllCompaniesInfo()
 

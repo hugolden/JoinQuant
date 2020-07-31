@@ -31,7 +31,7 @@ class CompaniesCollection(BaseFrame, DataQuery):
 
     def _queryFromDatabase(self):
         companies = self.__query_table()
-        if len(companies == 0):
+        if len(companies) == 0:
             return False
         else:
             for singleQueryRow in companies:
@@ -54,6 +54,7 @@ class CompaniesCollection(BaseFrame, DataQuery):
                 company[self.__attributes[i].name] = row[self.__attributes[i].name]
 
             self.__insert_company(company)  # add to database
+            print(company)
 
             self.__companies.append(values)  # add to memory
 
@@ -82,7 +83,7 @@ class CompaniesFundamentalCollection(BaseFrame, DataQuery):
         """
         class FundamentalEnum(Enum):
             code = 0
-            date = 1
+            day = 1
             capitalization = 3  # 总股本
             circulating_cap = 4  # 流通股本
             market_cap = 5  # 总市值
@@ -98,7 +99,7 @@ class CompaniesFundamentalCollection(BaseFrame, DataQuery):
         self.__fundamentals = []
         self.__attributes = [
             FundamentalEnum.code,
-            FundamentalEnum.date,
+            FundamentalEnum.day,
             FundamentalEnum.capitalization,
             FundamentalEnum.circulating_cap,
             FundamentalEnum.market_cap,
@@ -123,7 +124,6 @@ class CompaniesFundamentalCollection(BaseFrame, DataQuery):
                 fundamental= {}
                 for attribute in self.__attributes:
                     fundamental[attribute.name] == fundamentalRet[attribute.value]
-                TableOperator.insertData(self._context, CompaniesFundamentalCollection.TABLE, fundamental)
                 self.__fundamentals.append(fundamental)
 
             return True
@@ -136,8 +136,9 @@ class CompaniesFundamentalCollection(BaseFrame, DataQuery):
             fundamental = {}
             for attribute in self.__attributes:
                 fundamental[attribute.name] = row[attribute.name]
-
+            TableOperator.insertData(self._context, CompaniesFundamentalCollection.TABLE, fundamental)
             self.__fundamentals.append(fundamental)
+            print(fundamental)
 
     def executeQuery(self):
         super().executeQuery()
@@ -172,7 +173,7 @@ class CompanyEnum(Enum):
 
 class FundamentalEnum(Enum):
     code = 0
-    date = 1
+    day = 1
     capitalization = 3  # 总股本
     circulating_cap = 4  # 流通股本
     market_cap = 5  # 总市值
