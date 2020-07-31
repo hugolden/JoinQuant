@@ -1,8 +1,6 @@
 import jqdatasdk as sdk
-import pandas as pd
 
-from joinQuant.DataContainer import DataContainer
-from joinQuant.DataModel.Tables import TableManager
+from joinQuant.MainStoryboard import MainStoryboard
 
 
 def auth():
@@ -11,8 +9,5 @@ def auth():
 
 if __name__ == '__main__':
     auth()
-    container = DataContainer()
-    companies = container.getCompanies()
-    for company in companies:
-        priceHistory = company.getPriceHistory()
+    storyBoard = MainStoryboard()
 

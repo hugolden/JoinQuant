@@ -41,4 +41,5 @@ def insertData(context: Context, tableName: str, entries: dict):
 
     cursor = context.getCusor()
     cursor.execute(insert_sql, tuple(values))
+    cursor.commit()
     return

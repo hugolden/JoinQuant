@@ -25,7 +25,7 @@ class DataQuery(metaclass=abc.ABCMeta):
     def _queryFromServer(self):
         pass
 
-    def _executeQuery(self):
+    def executeQuery(self):
         if not self.queryFromMemory():
             if not self.queryFromDatabase():
                 self.queryFromServer()

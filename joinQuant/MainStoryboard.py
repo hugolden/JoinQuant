@@ -1,6 +1,14 @@
+from joinQuant.Context import Context
+from joinQuant.DataModel.ComaniesCollection import CompaniesCollection, CompaniesFundamentalCollection
+from joinQuant.DataModel.Tables import TableManager
+
+
 class MainStoryboard:
     def __init__(self):
-        pass
+        self.__context = Context()
+        tableManager = TableManager(self.__context)
+        tableManager.create_table()
+
 
     def getHightestHistoryDiff(self):
         pass
@@ -13,4 +21,15 @@ class MainStoryboard:
 
     def readCompaniesFromServer(self):
         pass
+
+    def getAllCompaniesInfo(self):
+        companiesCollection = CompaniesCollection(self.__context)
+        companiesInfo = companiesCollection.executeQuery()
+
+        fundamentalsCollection = CompaniesFundamentalCollection(self.__context)
+        fundamentals = fundamentalsCollection.executeQuery()
+
+
+
+
 
