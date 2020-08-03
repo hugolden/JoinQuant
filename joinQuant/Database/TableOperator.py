@@ -19,6 +19,31 @@ def queryData(context: Context, tableName: str, params: dict = {}) -> list:
     return result
 
 
+def deleteFromTable(context:Context, tableName:str, conditions:dict = {}):
+    delete_sql = "DELETE FROM {}".format(tableName)
+    cursor = context.getCusor()
+    items = list(dict.items())
+    size = len(items)
+    if size>0:
+        condition = " WHERE "
+        values = []
+        for i in range(size):
+            item = items[i]
+            condition += "{0}={1}".format(item[0],"%s")
+            values.append(item[1])
+            if i == size-1:
+                condition+=" AND "
+        delete_sql+=condition
+        cursor.execute(delete_sql, tuple(values))
+    else:
+        cursor.execute(delete_sql)
+    cursor.commit()
+
+    pass
+
+
+
+
 def insertData(context: Context, tableName: str, entries: dict):
     insert_sql = "INSERT INTO {} (".format(tableName)
 

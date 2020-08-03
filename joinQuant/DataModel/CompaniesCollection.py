@@ -7,7 +7,7 @@ from joinQuant.DataModel.BaseFrame import BaseFrame
 from joinQuant.DataModel.BaseFrame import DataQuery
 from joinQuant.Database import TableOperator
 
-from jqdatasdk import valuation, query
+from jqdatasdk import valuation, query, datetime
 
 
 class CompaniesCollection(BaseFrame, DataQuery):
@@ -120,6 +120,10 @@ class CompaniesFundamentalCollection(BaseFrame, DataQuery):
         if len(fundamentals) == 0:
             return False
         else:
+            todayDate = '%s' % (datetime.date.today())
+            if(fundamentals[0][FundamentalEnum.day] == todayDate):
+                self.__delete_data()
+                return False
             for fundamentalRet in fundamentals:
                 fundamental= {}
                 for attribute in self.__attributes:
@@ -143,6 +147,10 @@ class CompaniesFundamentalCollection(BaseFrame, DataQuery):
     def executeQuery(self):
         super().executeQuery()
         return self.__fundamentals
+
+    def __delete_data(self):
+        TableOperator.deleteFromTable(CompaniesFundamentalCollection.TABLE)
+
 
     def __build_fundamentals_query(self):
         q = query(valuation.code,
