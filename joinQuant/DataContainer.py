@@ -1,7 +1,7 @@
 import jqdatasdk as sdk
 
 from joinQuant.Context import Context
-from joinQuant.DataModel.ComaniesCollection import CompaniesCollection
+from joinQuant.DataModel.CompaniesCollection import CompaniesCollection
 from joinQuant.DataModel.CompanyFrame import CompanyFrame
 from joinQuant.DataModel.Tables import TableManager
 

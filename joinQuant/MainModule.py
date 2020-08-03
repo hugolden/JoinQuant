@@ -12,3 +12,6 @@ if __name__ == '__main__':
     storyBoard = MainStoryboard()
     storyBoard.getAllCompaniesInfo()
 
+    expectedCodes = storyBoard.findCompaniesROEGreaterThan15Percent()
+
+

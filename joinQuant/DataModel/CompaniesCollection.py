@@ -123,7 +123,7 @@ class CompaniesFundamentalCollection(BaseFrame, DataQuery):
             for fundamentalRet in fundamentals:
                 fundamental= {}
                 for attribute in self.__attributes:
-                    fundamental[attribute.name] == fundamentalRet[attribute.value]
+                    fundamental[attribute.name] = fundamentalRet[attribute.value]
                 self.__fundamentals.append(fundamental)
 
             return True
@@ -174,13 +174,13 @@ class CompanyEnum(Enum):
 class FundamentalEnum(Enum):
     code = 0
     day = 1
-    capitalization = 3  # 总股本
-    circulating_cap = 4  # 流通股本
-    market_cap = 5  # 总市值
-    circulating_market_cap = 6  # 流通市值
-    turnover_ratio = 7  # 换手率
-    pe_ratio = 8  # 动态市盈率
-    pe_ratio_lyr = 9  # 静态市盈率
-    pb_ratio = 10  # 市净率
-    ps_ratio = 11  # 市销率
-    pcf_ratio = 12  # 市现率
+    capitalization = 2  # 总股本
+    circulating_cap = 3  # 流通股本
+    market_cap = 4  # 总市值
+    circulating_market_cap = 5  # 流通市值
+    turnover_ratio = 6  # 换手率
+    pe_ratio = 7  # 动态市盈率
+    pe_ratio_lyr = 8  # 静态市盈率
+    pb_ratio = 9  # 市净率
+    ps_ratio = 10  # 市销率
+    pcf_ratio = 11  # 市现率
