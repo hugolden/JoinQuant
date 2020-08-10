@@ -123,6 +123,7 @@ class CompaniesFundamentalCollection(BaseFrame, DataQuery):
         if len(fundamentals) == 0:
             fundamentals = TableOperator.queryData(self._context, CompaniesFundamentalCollection.TABLE,{FundamentalEnum.day.name:yesterday})
             if len(fundamentals) ==0:
+                self.__delete_data() # remove older data
                 return False
         if (fundamentals[0][FundamentalEnum.day.value] == today or
                 fundamentals[0][FundamentalEnum.day.value] == yesterday):
@@ -152,7 +153,7 @@ class CompaniesFundamentalCollection(BaseFrame, DataQuery):
         return self.__fundamentals
 
     def __delete_data(self):
-        TableOperator.deleteFromTable(CompaniesFundamentalCollection.TABLE)
+        TableOperator.deleteFromTable(self._context,CompaniesFundamentalCollection.TABLE)
 
     def __build_fundamentals_query(self):
         q = query(valuation.code,

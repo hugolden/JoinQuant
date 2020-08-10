@@ -26,7 +26,7 @@ def queryData(context: Context, tableName: str, params: dict = {}) -> list:
 def deleteFromTable(context:Context, tableName:str, conditions:dict = {}):
     delete_sql = "DELETE FROM {}".format(tableName)
     cursor = context.getCusor()
-    items = list(dict.items())
+    items = list(conditions.items())
     size = len(items)
     if size>0:
         condition = " WHERE "
