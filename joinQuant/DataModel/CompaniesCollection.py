@@ -3,6 +3,7 @@ from enum import Enum
 import jqdatasdk as sdk
 
 import joinQuant.Database.CacheAgent as Cache
+from joinQuant import Utils
 from joinQuant.DataModel.BaseFrame import BaseFrame
 from joinQuant.DataModel.BaseFrame import DataQuery
 from joinQuant.Database import TableOperator
@@ -120,8 +121,11 @@ class CompaniesFundamentalCollection(BaseFrame, DataQuery):
         if len(fundamentals) == 0:
             return False
         else:
-            todayDate = '%s' % (datetime.date.today())
-            if(fundamentals[0][FundamentalEnum.day] == todayDate):
+            yesterday = Utils.get_yesterday()
+            today = Utils.get_today()
+
+            if(fundamentals[0][FundamentalEnum.day] == today or
+                fundamentals[0][FundamentalEnum.day] == yesterday):
                 self.__delete_data()
                 return False
             for fundamentalRet in fundamentals:
