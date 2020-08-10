@@ -3,18 +3,22 @@ from joinQuant.Context import Context
 
 def queryData(context: Context, tableName: str, params: dict = {}) -> list:
     query_sql = "SELECT * FROM {}".format(tableName)
+    cursor = context.getCusor()
     if len(params) != 0:
-        query_sql += "WHERE"
-        items = list(params)
+        query_sql += " WHERE "
+        items = list(params.items())
+        values = []
         for i in range(len(items)):
             key = items[i][0]
             value = items[i][1]
-            query_sql += key + "=" + value
+            values.append(value)
+            query_sql += key + "=%s"
             if i != (len(items) - 1):
                 query_sql += " AND "
+        cursor.execute(query_sql,values)
 
-    cursor = context.getCusor()
-    cursor.execute(query_sql)
+    else:
+        cursor.execute(query_sql)
     result = cursor.fetchall()
     return result
 

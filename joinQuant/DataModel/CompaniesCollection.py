@@ -8,7 +8,7 @@ from joinQuant.DataModel.BaseFrame import BaseFrame
 from joinQuant.DataModel.BaseFrame import DataQuery
 from joinQuant.Database import TableOperator
 
-from jqdatasdk import valuation, query, datetime
+from jqdatasdk import valuation, query
 
 
 class CompaniesCollection(BaseFrame, DataQuery):
@@ -80,7 +80,7 @@ class CompaniesCollection(BaseFrame, DataQuery):
 class CompaniesFundamentalCollection(BaseFrame, DataQuery):
     TABLE = "Fundamental"
 
-    def __init__(self,context):
+    def __init__(self, context):
         """
         class FundamentalEnum(Enum):
             code = 0
@@ -117,25 +117,24 @@ class CompaniesFundamentalCollection(BaseFrame, DataQuery):
         return len(self.__fundamentals) != 0
 
     def _queryFromDatabase(self):
-        fundamentals = TableOperator.queryData(self._context, CompaniesFundamentalCollection.TABLE)
+        today = Utils.get_today()
+        yesterday = Utils.get_yesterday()
+        fundamentals = TableOperator.queryData(self._context, CompaniesFundamentalCollection.TABLE,{FundamentalEnum.day.name:today})
         if len(fundamentals) == 0:
-            return False
-        else:
-            yesterday = Utils.get_yesterday()
-            today = Utils.get_today()
-
-            if(fundamentals[0][FundamentalEnum.day] == today or
-                fundamentals[0][FundamentalEnum.day] == yesterday):
-                self.__delete_data()
+            fundamentals = TableOperator.queryData(self._context, CompaniesFundamentalCollection.TABLE,{FundamentalEnum.day.name:yesterday})
+            if len(fundamentals) ==0:
                 return False
-            for fundamentalRet in fundamentals:
-                fundamental= {}
-                for attribute in self.__attributes:
-                    fundamental[attribute.name] = fundamentalRet[attribute.value]
-                self.__fundamentals.append(fundamental)
+        if (fundamentals[0][FundamentalEnum.day.value] == today or
+                fundamentals[0][FundamentalEnum.day.value] == yesterday):
+            self.__delete_data()
+            return False
+        for fundamentalRet in fundamentals:
+            fundamental = {}
+            for attribute in self.__attributes:
+                fundamental[attribute.name] = fundamentalRet[attribute.value]
+            self.__fundamentals.append(fundamental)
 
-            return True
-
+        return True
 
     def _queryFromServer(self):
         fundamentalQuery = self.__build_fundamentals_query()
@@ -154,7 +153,6 @@ class CompaniesFundamentalCollection(BaseFrame, DataQuery):
 
     def __delete_data(self):
         TableOperator.deleteFromTable(CompaniesFundamentalCollection.TABLE)
-
 
     def __build_fundamentals_query(self):
         q = query(valuation.code,
