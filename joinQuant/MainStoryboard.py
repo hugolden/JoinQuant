@@ -58,12 +58,17 @@ class MainStoryboard:
             accelerate  =pe_lyr/pe
             if pe<0:
                 continue
-            if accelerate<1:
+            if accelerate<1.3:
                 continue
 
-            if roe >=0.15 :
+
+            if not code.startswith('60') and not code.startswith('00'):
+                continue
+
+            if roe >=0.10 :
                 filteredCompanies.append(code)
                 print(code)
+
 
 
 
