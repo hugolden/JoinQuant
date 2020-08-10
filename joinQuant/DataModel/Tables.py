@@ -13,7 +13,8 @@ class TableManager(BaseFrame):
                            "    name varchar(100)," \
                            "    start_date varchar(32)," \
                            "    end_date varchar(32)," \
-                           "    type varchar(32)" \
+                           "    type varchar(32)," \
+                           "    last_edit_date varchar(32)" \
                            ")"
 
         create_dates_table_sql = "CREATE TABLE IF NOT EXISTS PriceCollection(" \
@@ -47,10 +48,17 @@ class TableManager(BaseFrame):
                                         "pcf_ratio double precision" \
                                         ")"
 
+        create_company_st_table_sql = "CREATE TABLE IF NOT EXISTS STInfo(" \
+                                      "code varchar(12) PRIMARY KEY," \
+                                      "is_st boolean," \
+                                      "last_edit_time varchar(32)" \
+                                      ")"
+
         self._cursor.execute(create_company_table_sql)
         self._cursor.execute(create_dates_table_sql)
         self._cursor.execute(create_prices_table_sql)
         self._cursor.execute(create_fundamentals_table_sql)
+        self._cursor.execute(create_company_st_table_sql)
         self._cursor.commit()
 
 

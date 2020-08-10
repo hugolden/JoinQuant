@@ -48,10 +48,10 @@ def deleteFromTable(context:Context, tableName:str, conditions:dict = {}):
 
 
 
-def insertData(context: Context, tableName: str, entries: dict):
+def insertData(context: Context, tableName: str, entry: dict):
     insert_sql = "INSERT INTO {} (".format(tableName)
 
-    items = list(entries.items())
+    items = list(entry.items())
     values = []
     valuesHolder = "("
     size = len(items)

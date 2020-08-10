@@ -16,7 +16,7 @@ class CompaniesCollection(BaseFrame, DataQuery):
 
     def __init__(self, context):
         super().__init__(context)
-        self.__companies = []
+        self.__companies = []  # array list, each item is dict, keys for the dict is attributes below
 
         self.__attributes = [
             CompanyEnum.code,
@@ -24,7 +24,7 @@ class CompaniesCollection(BaseFrame, DataQuery):
             CompanyEnum.name,
             CompanyEnum.start_date,
             CompanyEnum.end_date,
-            CompanyEnum.type
+            CompanyEnum.type,
         ]
 
     def _queryFromMemory(self):
@@ -34,13 +34,15 @@ class CompaniesCollection(BaseFrame, DataQuery):
         companies = self.__query_table()
         if len(companies) == 0:
             return False
-        else:
-            for singleQueryRow in companies:
-                company = {}
-                for attribute in self.__attributes:
-                    company[attribute.name] = singleQueryRow[attribute.value]
-                self.__companies.append(company)  # add to memory
-            return True
+        if companies[0][CompanyEnum.last_edit_date.value] != Utils.get_today():
+            TableOperator.deleteFromTable(self._context,CompaniesCollection.TABLE)
+            return False
+        for singleQueryRow in companies:
+            company = {}
+            for attribute in self.__attributes:
+                company[attribute.name] = singleQueryRow[attribute.value]
+            self.__companies.append(company)  # add to memory
+        return True
 
     def _queryFromServer(self):
         stockList = sdk.get_all_securities(types=['stock'])
@@ -51,6 +53,7 @@ class CompaniesCollection(BaseFrame, DataQuery):
             values[0] = code
             company = {}
             company[CompanyEnum.code.name] = code
+            company[CompanyEnum.last_edit_date.name] = Utils.get_today()
             for i in range(1, attrSize):
                 company[self.__attributes[i].name] = row[self.__attributes[i].name]
 
@@ -119,14 +122,16 @@ class CompaniesFundamentalCollection(BaseFrame, DataQuery):
     def _queryFromDatabase(self):
         today = Utils.get_today()
         yesterday = Utils.get_yesterday()
-        fundamentals = TableOperator.queryData(self._context, CompaniesFundamentalCollection.TABLE,{FundamentalEnum.day.name:today})
+        fundamentals = TableOperator.queryData(self._context, CompaniesFundamentalCollection.TABLE,
+                                               {FundamentalEnum.day.name: today})
         if len(fundamentals) == 0:
-            fundamentals = TableOperator.queryData(self._context, CompaniesFundamentalCollection.TABLE,{FundamentalEnum.day.name:yesterday})
-            if len(fundamentals) ==0:
-                self.__delete_data() # remove older data
+            fundamentals = TableOperator.queryData(self._context, CompaniesFundamentalCollection.TABLE,
+                                                   {FundamentalEnum.day.name: yesterday})
+            if len(fundamentals) == 0:
+                self.__delete_data()  # remove older data
                 return False
-        if (fundamentals[0][FundamentalEnum.day.value] == today or
-                fundamentals[0][FundamentalEnum.day.value] == yesterday):
+        if (fundamentals[0][FundamentalEnum.day.value] != today and
+                fundamentals[0][FundamentalEnum.day.value] != yesterday):
             self.__delete_data()
             return False
         for fundamentalRet in fundamentals:
@@ -153,7 +158,7 @@ class CompaniesFundamentalCollection(BaseFrame, DataQuery):
         return self.__fundamentals
 
     def __delete_data(self):
-        TableOperator.deleteFromTable(self._context,CompaniesFundamentalCollection.TABLE)
+        TableOperator.deleteFromTable(self._context, CompaniesFundamentalCollection.TABLE)
 
     def __build_fundamentals_query(self):
         q = query(valuation.code,
@@ -174,12 +179,13 @@ class CompaniesFundamentalCollection(BaseFrame, DataQuery):
 
 
 class CompanyEnum(Enum):
-    code = 0
-    display_name = 1
-    name = 2
-    start_date = 3
-    end_date = 4
-    type = 5
+    code = 1
+    display_name = 2
+    name = 3
+    start_date = 4
+    end_date = 5
+    type = 6
+    last_edit_date = 7
 
 
 class FundamentalEnum(Enum):
